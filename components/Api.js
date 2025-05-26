@@ -1,14 +1,14 @@
-const API_URL = 'http://localhost:8000/api/tarefas';
+const API_URL = 'http://localhost:8000/tarefas';
 import { Alert } from 'react-native';
-import auth from '@react-native-firebase/auth';
+import { auth } from './Firebase';
 
 const getToken = async () => {
-  const user = auth().currentUser;
+  const user = auth.currentUser;
   if (user) return await user.getIdToken();
   throw new Error('Usuário não autenticado');
 };
 
-export const fetchTarefas = async (setTarefas) => {
+export const fetchTarefas = async () => {
   try {
     const token = await getToken();
     const response = await fetch(API_URL, {
@@ -19,7 +19,7 @@ export const fetchTarefas = async (setTarefas) => {
 
     if (!response.ok) throw new Error('Erro ao buscar tarefas');
     const data = await response.json();
-    setTarefas(data);
+    return data
   } catch (error) {
     console.error('Erro ao buscar tarefas:', error.message);
     Alert.alert('Erro', `Não foi possível buscar as tarefas: ${error.message}`);

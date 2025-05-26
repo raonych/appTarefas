@@ -1,13 +1,37 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, Button } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, StyleSheet, Button} from 'react-native';
+import { fetchTarefas } from './Api';
+const HomeScreen = ({ navigation }) =>{
+   
+  const [tarefas, setTarefas] = useState([]);
 
-const HomeScreen = ({ navigation }) => (
+  useEffect(()=>{
+    const fetchData = async ()=>{
+      const tarefasData = await fetchTarefas();
+      setTarefas(tarefasData);
+    }
+    fetchData();
+  },[])
+  return (
   <View style={styles.container}>
     <Text>Bem-vindo!</Text>
-    <Image source={{ uri: 'https://via.placeholder.com/150' }} style={styles.image} />
     <Button title="Perfil" onPress={() => navigation.navigate('Perfil')} />
+    {tarefas == undefined
+    ?
+    (<Text>Você ainda não possui tarefas</Text>) 
+
+    : tarefas.map((tarefa) =>(
+      <View key={tarefa.id}>
+        <Text>{tarefa.titulo}</Text>
+        <Text>{tarefa.descricao}</Text>
+        <Text>{tarefa.concluido ? 'Concluído' : 'Pendente'}</Text>
+      </View>
+    ))}
+    <Button title="Nova Tarefa" onPress={() => navigation.navigate('RegistroTarefa')} />
   </View>
-);
+
+)
+}
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
