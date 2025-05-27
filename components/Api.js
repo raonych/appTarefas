@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8000/tarefas';
+const API_URL = 'http://localhost:8000/api/tarefas';
 import { Alert } from 'react-native';
 import { auth } from './Firebase';
 

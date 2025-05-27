@@ -17,10 +17,10 @@ const RegistroTarefaScreen = ({ navigation }) => {
         dataLimite
     }
     try {
-      const tarefa = await createTarefa(tarefaData);
-        Alert.alert('Sucesso! 🎉', 'Tarefa cadastrado com sucesso!', [
-        { text: 'OK', onPress: () => navigation.replace('Home') }
-        ]);
+      const tarefa = await createTarefa(tarefaData)
+      Alert.alert('Sucesso! 🎉', 'Tarefa cadastrado com sucesso!', [
+      { text: 'OK', onPress: () => navigation.replace('Home') }
+      ]);
     } catch (err) {
       Alert.alert('Erro', 'Não foi possível cadastrar a Tarefa. Tente novamente.');
     }
