@@ -2,24 +2,26 @@ const API_URL = 'http://localhost:8000/api/tarefas';
 import { Alert } from 'react-native';
 import { auth } from './Firebase';
 
-const getToken = async () => {
+const getUid = () => {
   const user = auth.currentUser;
-  if (user) return await user.getIdToken();
+  if (user) return user.uid;
   throw new Error('Usuário não autenticado');
 };
 
 export const fetchTarefas = async () => {
   try {
-    const token = await getToken();
+    const userId = await getUid();
+    console.log(userId)
     const response = await fetch(API_URL, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        method: 'POST',
+        'X-User-Id': userId,
       },
     });
 
     if (!response.ok) throw new Error('Erro ao buscar tarefas');
     const data = await response.json();
-    return data
+    return data;
   } catch (error) {
     console.error('Erro ao buscar tarefas:', error.message);
     Alert.alert('Erro', `Não foi possível buscar as tarefas: ${error.message}`);
@@ -28,16 +30,17 @@ export const fetchTarefas = async () => {
 
 export const createTarefa = async (tarefaData) => {
   try {
-    const token = await getToken();
+    console.log(tarefaData)
+    const userId = await getUid();
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        'X-User-Id': userId,
       },
       body: JSON.stringify(tarefaData),
     });
-
+    
     if (response.status === 201 || response.status === 204) {
       Alert.alert('Sucesso!', 'Tarefa cadastrada com sucesso!');
       return {};
@@ -63,12 +66,14 @@ export const createTarefa = async (tarefaData) => {
 
 export const deleteTarefa = async (tarefaId, setTarefas) => {
   try {
-    const token = await getToken();
+    const userId = await getUid();
     const response = await fetch(`${API_URL}/${tarefaId}`, {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'X-User-Id': userId,
       },
+      body: JSON.stringify({ userId }),
     });
 
     const textResponse = await response.text();
@@ -95,14 +100,14 @@ export const deleteTarefa = async (tarefaId, setTarefas) => {
 
 export const updateTarefa = async (tarefaId, updatedData, navigation) => {
   try {
-    const token = await getToken();
+    const userId = await getUid();
     const response = await fetch(`${API_URL}/${tarefaId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        'X-User-Id': userId,
       },
-      body: JSON.stringify(updatedData),
+      body: JSON.stringify({ ...updatedData, userId }),
     });
 
     if (response.ok) {

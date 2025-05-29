@@ -8,7 +8,8 @@ const HomeScreen = ({ navigation }) =>{
   useEffect(()=>{
     const fetchData = async ()=>{
       const tarefasData = await fetchTarefas();
-      setTarefas(tarefasData);
+      console.log(tarefasData)
+      setTarefas(tarefasData.tarefas);
     }
     fetchData();
   },[])
@@ -16,7 +17,7 @@ const HomeScreen = ({ navigation }) =>{
   <View style={styles.container}>
     <Text>Bem-vindo!</Text>
     <Button title="Perfil" onPress={() => navigation.navigate('Perfil')} />
-    {tarefas == undefined
+    {tarefas.length == 0 || tarefas == undefined
     ?
     (<Text>Você ainda não possui tarefas</Text>) 
 
