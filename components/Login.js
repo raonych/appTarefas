@@ -11,7 +11,7 @@ const LoginScreen = ({ navigation }) => {
   const handleLogin = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigation.replace('Home');
+      navigation.replace('Tabs');
     } catch (err) {
       setError('Erro ao fazer login. Verifique suas credenciais.');
     }

@@ -61,10 +61,10 @@ const PerfilScreen = () => {
         const data = {
           file: base64Img,
           upload_preset: 'preset_publico',
-          cloud_name: 'dgsffmd9f',
+          cloud_name: 'dyrjnu8aj',
         };
         
-        const res = await fetch('https://api.cloudinary.com/v1_1/dgsffmd9f/image/upload', {
+        const res = await fetch('https://api.cloudinary.com/v1_1/dyrjnu8aj/image/upload', {
           method: 'POST',
           body: JSON.stringify(data),
           headers: {

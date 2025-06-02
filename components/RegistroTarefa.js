@@ -19,7 +19,7 @@ const RegistroTarefaScreen = ({ navigation }) => {
     try {
       const tarefa = await createTarefa(tarefaData)
       Alert.alert('Sucesso! 🎉', 'Tarefa cadastrado com sucesso!', [
-      { text: 'OK', onPress: () => navigation.replace('Home') }
+      { text: 'OK', onPress: () => navigation.replace('Tabs') }
       ]);
     } catch (err) {
       Alert.alert('Erro', 'Não foi possível cadastrar a Tarefa. Tente novamente.');

@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8000/api/tarefas';
+const API_URL = 'http://10.0.2.2:8000/api/tarefas';
 import { Alert } from 'react-native';
 import { auth } from './Firebase';
 
@@ -11,7 +11,6 @@ const getUid = () => {
 export const fetchTarefas = async () => {
   try {
     const userId = await getUid();
-    console.log(userId)
     const response = await fetch(API_URL, {
       headers: {
         method: 'POST',
@@ -130,4 +129,28 @@ export const updateTarefa = async (tarefaId, updatedData, navigation) => {
     console.error('Erro ao atualizar tarefa:', error.message);
     Alert.alert('Erro ao atualizar', `Detalhes: ${error.message}`);
   }
+}
+
+export const fetchToggleStatus = async (id) => {
+  try {
+    const userId = await getUid();
+    const response = await fetch(`${API_URL}/${id}/toggle`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-User-Id': userId,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      console.error('Erro ao alternar status: ', await response.text());
+    }
+  } catch (error) {
+    console.error('Erro de rede ao alternar status:', error);
+  }
 };
+
+
